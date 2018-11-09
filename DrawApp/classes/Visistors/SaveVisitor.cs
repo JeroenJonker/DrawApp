@@ -10,16 +10,17 @@ namespace DrawApp
     public class SaveVisitor : IVisitor
     {
         public StringBuilder stringBuilder = new StringBuilder();
-        public string spaces { get; set; }
+        public string Spaces { get; set; }
+
         public void Visit(ShapeGroup group)
         {
-            string line = string.Format("{0}group {1}", spaces, group.Shapes.Count());
+            string line = string.Format("{0}group {1}", Spaces, group.Shapes.Count());
             stringBuilder.AppendLine(line);
         }
 
         public void Visit(InternalShape shape)
         {
-            string line = string.Format("{0}{1} {2} {3} {4} {5}", spaces, shape.GetName(), shape.Location.X, shape.Location.Y, shape.Width, shape.Height);
+            string line = string.Format("{0}{1} {2} {3} {4} {5}", Spaces, shape.GetName(), shape.Location.X, shape.Location.Y, shape.Width, shape.Height);
             stringBuilder.AppendLine(line);
         }
 
@@ -54,7 +55,7 @@ namespace DrawApp
                                 break;
                             }
                     }
-                    line = string.Format("{0}{1} {2} \"{3}\"", spaces, "ornament", position, textDecorator.Texts[x]);
+                    line = string.Format("{0}{1} {2} \"{3}\"", Spaces, "ornament", position, textDecorator.Texts[x]);
                     stringBuilder.AppendLine(line);
                 }
             }

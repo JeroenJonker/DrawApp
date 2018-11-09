@@ -1,4 +1,5 @@
 ﻿using DrawApp.classes.Interfaces;
+using DrawApp.classes.Visistors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,6 +93,16 @@ namespace DrawApp.classes
         //}
 
         public override void Save(SaveVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
+        public override void Move(MoveVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
+        public override void Resize(ResizeVisitor visitor)
         {
             visitor.Visit(this);
         }

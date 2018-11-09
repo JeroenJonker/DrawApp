@@ -66,36 +66,18 @@ namespace DrawApp.classes.Commands
 
         public void Undo(InternalCanvas canvas)
         {
-            if (!(OldShapeComponent is TextDecorator))
-            {
-                canvas.Shapes.Remove(TextOrnament);
-                canvas.Children.Remove(TextOrnament);
-                canvas.Shapes.Add(OldShapeComponent);
-                canvas.Children.Add(OldShapeComponent);
-            }
-            else if (OldShapeComponent is TextDecorator textshape)
-            {
-                //canvas.Shapes.Remove(Text);
-                //canvas.Children.Remove(Text);
-                //canvas.Shapes.Add(OldShapeComponent);
-                //canvas.Children.Add(OldShapeComponent);
-                throw new NotImplementedException();
-            }
+            canvas.Shapes.Remove(TextOrnament);
+            canvas.Children.Remove(TextOrnament);
+            canvas.Shapes.Add(OldShapeComponent);
+            canvas.Children.Add(OldShapeComponent);
         }
 
         public void Redo(InternalCanvas canvas)
         {
-            if (!(OldShapeComponent is TextDecorator))
-            {
-                canvas.Shapes.Add(TextOrnament);
-                canvas.Children.Add(TextOrnament);
-                canvas.Shapes.Remove(OldShapeComponent);
-                canvas.Children.Remove(OldShapeComponent);
-            }
-            else if (OldShapeComponent is TextDecorator textshape)
-            {
-                throw new NotImplementedException();
-            }
+            canvas.Shapes.Add(TextOrnament);
+            canvas.Children.Add(TextOrnament);
+            canvas.Shapes.Remove(OldShapeComponent);
+            canvas.Children.Remove(OldShapeComponent);
         }
     }
 }

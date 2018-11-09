@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using DrawApp.classes.Visistors;
 
 namespace DrawApp.classes
 {
@@ -72,9 +73,9 @@ namespace DrawApp.classes
                     if (a % 2 == 1)
                         locy = (height / 2) - (formattedText.Height / 2);
                     if (a % 4 == 2)
-                        locy = width - formattedText.Height;
+                        locy = height - formattedText.Height;
                     if (a % 4 == 1)
-                        locx = height - formattedText.Width;
+                        locx = width - formattedText.Width;
                     group.Children.Add(formattedText.BuildGeometry(new Point(locx, locy)));
                 }
             }
@@ -95,6 +96,19 @@ namespace DrawApp.classes
         public override Geometry GetGeometry(double x = 0, double y = 0, double width = 5, double height = 5)
         {
             return GetGeometry();
+        }
+
+        public override void Move(MoveVisitor visitor)
+        {
+            visitor.Visit(this);
+            ShapeComponent.Move(visitor);
+        }
+
+        public override void Resize(ResizeVisitor visitor)
+        {
+            visitor.Visit(this);
+            ShapeComponent.Resize(visitor);
+            //SetNewGeometry();
         }
     }
 }

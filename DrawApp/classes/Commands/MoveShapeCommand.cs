@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DrawApp.classes.Visistors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace DrawApp.classes
         private Point newLocation;
         private double newHeight;
         private double newWidth;
-        private ShapeComponent shape;
+        private ShapeComponent shapeComponent;
         public bool IsCompleted { get; set; }
 
         public MoveShapeCommand()
@@ -29,15 +30,15 @@ namespace DrawApp.classes
 
         public void Execute(InternalCanvas canvas)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed && shape == null)
+            if (Mouse.LeftButton == MouseButtonState.Pressed && shapeComponent == null)
             {
                 ExecuteMouseDown(canvas);
             }
-            else if (Mouse.LeftButton == MouseButtonState.Pressed && shape != null)
+            else if (Mouse.LeftButton == MouseButtonState.Pressed && shapeComponent != null)
             {
                 ExecuteMouseMove(canvas);
             }
-            else if (Mouse.LeftButton == MouseButtonState.Released && shape != null)
+            else if (Mouse.LeftButton == MouseButtonState.Released && shapeComponent != null)
             {
                 ExecuteMouseUp(canvas);
             }
@@ -51,14 +52,15 @@ namespace DrawApp.classes
                 if (canvasshape.IsMouseOver)
                 {
                     canvasshape.MousePosition = canvasshape.GetMousePositionType(mousePosition);
-                    shape = canvasshape;
-                    oldLocation = canvas.GetPositionOfShapeInCanvas(shape);
-                    oldHeight = shape.Height;
-                    oldWidth = shape.Width;
-                    shape.Stroke = Brushes.DarkBlue;
+                    shapeComponent = canvasshape;
+                    oldLocation = canvas.GetPositionOfShapeInCanvas(shapeComponent);
+                    oldHeight = shapeComponent.Height;
+                    oldWidth = shapeComponent.Width;
+                    shapeComponent.Stroke = Brushes.DarkBlue;
                     break;
                 }
             }
+            newLocation = canvas.GetPositionOfShapeInCanvas(shapeComponent);
         }
 
         private void ExecuteMouseMove(InternalCanvas canvas)
@@ -69,31 +71,31 @@ namespace DrawApp.classes
             double offset_y = point.Y - mousePosition.Y;
 
             // Get the rectangle's current position.
-            double new_x, new_y;
-            GetNewLocationAndSize(shape, offset_x, offset_y, out new_x, out new_y, out newWidth, out newHeight);
+            Point newPosition = GetNewLocationAndSize(canvas, offset_x, offset_y);
 
             // Don't use negative width or height.
             if ((newWidth > 0) && (newHeight > 0))
             {
                 // Update the rectangle.
-                //SetLeftOfShape(canvas, shape, new_x);
-                //SetTopOfShape(canvas, shape, new_y);
-                canvas.SetNewShape(shape, SetLeftOfShape(canvas, shape, new_x), SetTopOfShape(canvas, shape, new_y));
-                shape.Width = newWidth;
-                shape.Height = newHeight;
+                shapeComponent.Move(new MoveVisitor(new Point(newPosition.X - newLocation.X, newPosition.Y - newLocation.Y)));
+                //canvas.SetNewShape(shapeComponent, newPosition.X, newPosition.Y);
+                canvas.SetNewShape(shapeComponent, shapeComponent.Location.X, shapeComponent.Location.Y);
+                shapeComponent.Resize(new ResizeVisitor(offset_x, offset_y, shapeComponent.MousePosition));
+                //shapeComponent.Width = newWidth;
+                //shapeComponent.Height = newHeight;
 
                 // Save the mouse's new location.
                 mousePosition = point;
             }
-            newLocation = canvas.GetPositionOfShapeInCanvas(shape);
-            shape.Location = newLocation;
+            newLocation = canvas.GetPositionOfShapeInCanvas(shapeComponent);
+            shapeComponent.Location = newLocation;
             //SetMouseCursor(shape);
         }
 
         private void ExecuteMouseUp(InternalCanvas canvas)
         {
             //shape.Selected = false;
-            shape.Stroke = null;
+            shapeComponent.Stroke = null;
             //Cursor = Cursors.Arrow;
         }
 
@@ -129,15 +131,15 @@ namespace DrawApp.classes
             }
         }
 
-        private static void GetNewLocationAndSize(ShapeComponent shape, double offset_x, double offset_y, out double new_x, out double new_y, out double new_width, out double new_height)
+        private Point GetNewLocationAndSize(InternalCanvas canvas, double offset_x, double offset_y)
         {
-            new_x = shape.Location.X;
-            new_y = shape.Location.Y;
-            new_width = shape.ActualWidth;
-            new_height = shape.ActualHeight;
+            double new_x = shapeComponent.Location.X;
+            double new_y = shapeComponent.Location.Y;
+            newWidth = shapeComponent.ActualWidth;
+            newHeight = shapeComponent.ActualHeight;
 
             // Update the rectangle.
-            switch (shape.MousePosition)
+            switch (shapeComponent.MousePosition)
             {
                 case MousePositionType.Body:
                     new_x += offset_x;
@@ -146,54 +148,55 @@ namespace DrawApp.classes
                 case MousePositionType.UL:
                     new_x += offset_x;
                     new_y += offset_y;
-                    new_width -= offset_x;
-                    new_height -= offset_y;
+                    newWidth -= offset_x;
+                    newHeight -= offset_y;
                     break;
                 case MousePositionType.UR:
                     new_y += offset_y;
-                    new_width += offset_x;
-                    new_height -= offset_y;
+                    newWidth += offset_x;
+                    newHeight -= offset_y;
                     break;
                 case MousePositionType.DR:
-                    new_width += offset_x;
-                    new_height += offset_y;
+                    newWidth += offset_x;
+                    newHeight += offset_y;
                     break;
                 case MousePositionType.DL:
                     new_x += offset_x;
-                    new_width -= offset_x;
-                    new_height += offset_y;
+                    newWidth -= offset_x;
+                    newHeight += offset_y;
                     break;
                 case MousePositionType.L:
                     new_x += offset_x;
-                    new_width -= offset_x;
+                    newWidth -= offset_x;
                     break;
                 case MousePositionType.R:
-                    new_width += offset_x;
+                    newWidth += offset_x;
                     break;
                 case MousePositionType.B:
-                    new_height += offset_y;
+                    newHeight += offset_y;
                     break;
                 case MousePositionType.T:
                     new_y += offset_y;
-                    new_height -= offset_y;
+                    newHeight -= offset_y;
                     break;
             }
+            return new Point(SetLeftOfShape(canvas, shapeComponent, new_x), SetTopOfShape(canvas, shapeComponent, new_y));
         }
 
         public void Undo(InternalCanvas canvas)
         {
-            shape.Width = oldWidth;
-            shape.Height = oldHeight;
-            shape.Location = oldLocation;
-            canvas.SetNewShape(shape, oldLocation.X, oldLocation.Y);
+            shapeComponent.Width = oldWidth;
+            shapeComponent.Height = oldHeight;
+            shapeComponent.Location = oldLocation;
+            canvas.SetNewShape(shapeComponent, oldLocation.X, oldLocation.Y);
         }
 
         public void Redo(InternalCanvas canvas)
         {
-            shape.Width = newWidth;
-            shape.Height = newHeight;
-            shape.Location = newLocation;
-            canvas.SetNewShape(shape, newLocation.X, newLocation.Y);
+            shapeComponent.Width = newWidth;
+            shapeComponent.Height = newHeight;
+            shapeComponent.Location = newLocation;
+            canvas.SetNewShape(shapeComponent, newLocation.X, newLocation.Y);
         }
 
         //private void SetMouseCursor(InternalShape shape)

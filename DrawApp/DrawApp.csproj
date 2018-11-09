@@ -79,6 +79,8 @@
     <Compile Include="classes\Interfaces\IVisitor.cs" />
     <Compile Include="classes\Shapes\TextDecorator.cs" />
     <Compile Include="classes\Test.cs" />
+    <Compile Include="classes\Visistors\MoveVisitor.cs" />
+    <Compile Include="classes\Visistors\ResizeVisitor.cs" />
     <Compile Include="classes\Visistors\SaveVisitor.cs" />
     <Page Include="InputDialog.xaml">
       <Generator>MSBuild:Compile</Generator>

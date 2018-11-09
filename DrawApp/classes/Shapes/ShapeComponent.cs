@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DrawApp.classes.Visistors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,8 @@ namespace DrawApp.classes
         //public abstract void Remove(ShapeComponent component);
         //public abstract bool Contains(ShapeComponent component);
         public abstract void Save(SaveVisitor visitor);
+        public abstract void Move(MoveVisitor visitor);
+        public abstract void Resize(ResizeVisitor visitor);
         public abstract Geometry GetGeometry(double x = 0, double y = 0, double width = 5, double height = 5);
         public enum MousePositionType
         {

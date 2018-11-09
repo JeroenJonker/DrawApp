@@ -120,3 +120,13 @@ C:\Users\Jeroe\Documents\GitHub\DrawApp\DrawApp\obj\Debug\DrawApp.csproj.CoreCom
 C:\Users\Jeroe\Documents\GitHub\DrawApp\DrawApp\obj\Debug\DrawApp.csproj.CopyComplete
 C:\Users\Jeroe\Documents\GitHub\DrawApp\DrawApp\obj\Debug\DrawApp.exe
 C:\Users\Jeroe\Documents\GitHub\DrawApp\DrawApp\obj\Debug\DrawApp.pdb
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\de\System.Windows.Interactivity.resources.dll
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\en\System.Windows.Interactivity.resources.dll
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\es\System.Windows.Interactivity.resources.dll
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\it\System.Windows.Interactivity.resources.dll
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\ru\System.Windows.Interactivity.resources.dll
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+C:\Users\Jeroen Jonker\Documents\GitHub\DrawApp\DrawApp\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll

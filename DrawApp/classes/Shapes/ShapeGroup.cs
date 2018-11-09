@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using DrawApp.classes.Visistors;
 
 namespace DrawApp.classes
 {
@@ -65,10 +66,15 @@ namespace DrawApp.classes
                     //{
                     //    decorator.SetNewGeometry();
                     //}
-                    foreach (var item in decorator.GetGeometryGroup().Children)
-                    {
-                        Geometry.Children.Add(item);
-                    }
+                    //foreach (var item in decorator.GetGeometryGroup().Children)
+                    //{
+                    //    Geometry.Children.Add(item);
+                    //}
+                    ShapeComponent decoratedShape = decorator.ShapeComponent;
+                    Geometry.Children.Add(decoratedShape.GetGeometry(decoratedShape.Location.X - Location.X, decoratedShape.Location.Y - Location.Y, decoratedShape.Width, decoratedShape.Height));
+                    Geometry texts = decorator.GetGeometry();
+                    texts.Transform = new TranslateTransform(decoratedShape.Location.X - Location.X, decoratedShape.Location.Y - Location.Y);
+                    Geometry.Children.Add(texts);
                 }
             }
         }
@@ -111,16 +117,6 @@ namespace DrawApp.classes
             SetNewGeometry();
         }
 
-        //public void Refresh(Point oldLocation)
-        //{
-        //    double x = Location.X - oldLocation.X;
-        //    double y = Location.Y - oldLocation.Y;
-        //    foreach (ShapeComponent component in Shapes)
-        //    {
-        //        SetNewGeometry();
-        //    }
-        //}
-
         public void Remove(ShapeComponent component)
         {
             Shapes.Remove(component);
@@ -134,12 +130,12 @@ namespace DrawApp.classes
         public override void Save(SaveVisitor visitor)
         {
             visitor.Visit(this);
-            visitor.spaces += "   ";
+            visitor.Spaces += "   ";
             foreach (ShapeComponent shape in Shapes)
             {
                 shape.Save(visitor);
             }
-            visitor.spaces = visitor.spaces.Substring(0, visitor.spaces.Length - 3);
+            visitor.Spaces = visitor.Spaces.Substring(0, visitor.Spaces.Length - 3);
         }
 
         public override Geometry GetGeometry()
@@ -150,6 +146,31 @@ namespace DrawApp.classes
         public override Geometry GetGeometry(double x = 0, double y = 0, double width = 5, double height = 5)
         {
             return GetGeometry();
+        }
+
+        public override void Move(MoveVisitor visitor)
+        {
+            visitor.Visit(this);
+            //visitor.DifferenceInPosition = new Point(visitor.DifferenceInPosition.X / 2, visitor.DifferenceInPosition.Y / 2);
+            foreach (ShapeComponent shape in Shapes)
+            {
+                shape.Move(visitor);
+            }
+            SetNewGeometry();
+        }
+
+        public override void Resize(ResizeVisitor visitor)
+        {
+            visitor.Visit(this);
+            //SetNewGeometry();
+            //visitor.DiffenceHeight /= 2;
+            //visitor.DiffenceWidth /= 2;
+            foreach (ShapeComponent shape in Shapes)
+            {
+                shape.Resize(visitor);
+                shape.Move(new MoveVisitor(new Point(visitor.DiffenceWidth / Shapes.Count, visitor.DiffenceHeight / Shapes.Count)));
+            }
+            SetNewGeometry();
         }
     }
 }
