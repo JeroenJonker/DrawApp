@@ -80,7 +80,7 @@ namespace DrawApp.classes
                 shapeComponent.Move(new MoveVisitor(new Point(newPosition.X - newLocation.X, newPosition.Y - newLocation.Y)));
                 //canvas.SetNewShape(shapeComponent, newPosition.X, newPosition.Y);
                 canvas.SetNewShape(shapeComponent, shapeComponent.Location.X, shapeComponent.Location.Y);
-                shapeComponent.Resize(new ResizeVisitor(offset_x, offset_y, shapeComponent.MousePosition));
+                shapeComponent.Resize(new ResizeVisitor(((offset_x + shapeComponent.ActualWidth) / shapeComponent.ActualWidth), ((offset_y + shapeComponent.ActualHeight) / shapeComponent.ActualHeight), shapeComponent.MousePosition));
                 //shapeComponent.Width = newWidth;
                 //shapeComponent.Height = newHeight;
 

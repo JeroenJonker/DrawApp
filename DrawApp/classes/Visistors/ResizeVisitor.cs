@@ -29,8 +29,8 @@ namespace DrawApp.classes.Visistors
 
         public void Visit(ShapeGroup group)
         {
-            DiffenceWidth *= 2;
-            DiffenceHeight *= 2;
+            //DiffenceWidth *= 2;
+            //DiffenceHeight *= 2;
             Execute(group);
         }
 
@@ -47,42 +47,51 @@ namespace DrawApp.classes.Visistors
             switch (MousePositionType)
             {
                 case MousePositionType.UL:
-                    newwidth = bounds.Width - DiffenceWidth;
-                    newheight = bounds.Height - DiffenceHeight;
+                    newwidth = bounds.Width * DiffenceWidth;
+                    newheight = bounds.Height * DiffenceHeight;
                     break;
                 case MousePositionType.UR:
-                    newwidth = bounds.Width + DiffenceWidth;
-                    newheight = bounds.Height - DiffenceHeight;
+                    newwidth = bounds.Width * DiffenceWidth;
+                    newheight = bounds.Height * DiffenceHeight;
                     break;
                 case MousePositionType.DR:
-                    newwidth = bounds.Width + DiffenceWidth;
-                    newheight = bounds.Height + DiffenceHeight;
+                    newwidth = bounds.Width * DiffenceWidth;
+                    newheight = bounds.Height * DiffenceHeight;
                     break;
                 case MousePositionType.DL:
-                    newwidth = bounds.Width - DiffenceWidth;
-                    newheight = bounds.Height + DiffenceHeight;
+                    newwidth = bounds.Width * DiffenceWidth;
+                    newheight = bounds.Height * DiffenceHeight;
                     break;
                 case MousePositionType.L:
-                    newwidth = bounds.Width - DiffenceWidth;
+                    newwidth = bounds.Width * DiffenceWidth;
                     break;
                 case MousePositionType.R:
-                    newwidth = bounds.Width + DiffenceWidth;
+                    newwidth = bounds.Width * DiffenceWidth;
                     break;
                 case MousePositionType.B:
-                    newheight = bounds.Height + DiffenceHeight;
+                    newheight = bounds.Height * DiffenceHeight;
                     break;
                 case MousePositionType.T:
-                    newheight = bounds.Height - DiffenceHeight;
+                    newheight = bounds.Height * DiffenceHeight;
                     break;
             }
-            if (newheight >= 0)
+            if (newheight > 0)
             {
                 shapeComponent.Height = newheight;
             }
-            if (newwidth >= 0)
+            if (newwidth > 0)
             {
                 shapeComponent.Width = newwidth;
             }
+
+            //if (DiffenceHeight >= 0)
+            //{
+            //    shapeComponent.Height = shapeComponent.ActualHeight * DiffenceHeight;
+            //}
+            //if (DiffenceWidth >= 0)
+            //{
+            //    shapeComponent.Width = shapeComponent.ActualWidth * DiffenceWidth;
+            //}
         }
     }
 }

@@ -168,7 +168,10 @@ namespace DrawApp.classes
             foreach (ShapeComponent shape in Shapes)
             {
                 shape.Resize(visitor);
-                shape.Move(new MoveVisitor(new Point(visitor.DiffenceWidth / Shapes.Count, visitor.DiffenceHeight / Shapes.Count)));
+                double differenceheight = (visitor.DiffenceHeight * shape.Location.Y) - shape.Location.Y;
+                double differencewidth = (visitor.DiffenceWidth * shape.Location.X) - shape.Location.X;
+                shape.Move(new MoveVisitor(new Point(differencewidth, differenceheight)));
+                //shape.Move(new MoveVisitor(new Point(visitor.DiffenceWidth / Shapes.Count, visitor.DiffenceHeight / Shapes.Count)));
             }
             SetNewGeometry();
         }
